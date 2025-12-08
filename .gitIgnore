@@ -1,0 +1,53 @@
+.DS_Store
+/.DS_Store
+
+.NET / backend
+/bin/
+/obj/
+
+SQLite
+/.db-shm
+**/.db-wal
+
+Frontend / Node
+**/node_modules/
+dist/
+dist-ssr/
+.local
+
+npm-debug.log
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+
+
+# Build results
+[Bb]in/
+[Oo]bj/
+*.exe
+*.dll
+*.pdb
+*.log
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userprefs
+
+# Package manager files
+packages/ # If not using package reference
+node_modules/ # If front-end assets are managed via npm
+
+# Sensitive information
+appsettings.Development.json
+*.env
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Test results
+TestResult.xml
