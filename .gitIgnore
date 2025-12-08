@@ -51,3 +51,5 @@ Thumbs.db
 
 # Test results
 TestResult.xml
+fotball/package-lock.json
+FotballAPI/Database/SportsDatabase.db-shm
