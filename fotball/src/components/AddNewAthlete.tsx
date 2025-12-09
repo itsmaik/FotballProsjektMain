@@ -63,7 +63,7 @@ const AddNewAthlete = () => {
   };
 
   return (
-    <section>
+    <>
       <h3>Legg til ny spiller!</h3>
       <div>
         <label>Navn </label>
@@ -87,7 +87,7 @@ const AddNewAthlete = () => {
         Lagre
       </button>
       <p>{statusMessage}</p>
-    </section>
+    </>
   );
 };
 export default AddNewAthlete;

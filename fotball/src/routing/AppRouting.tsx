@@ -1,42 +1,24 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Layout from "../components/layout/Layout";
 import {
-  RegisterPage,
-  AdminPage,
+  AddNewAthletePage,
   NotFoundPage,
-  CompanyBooksPage,
+  FinancePage,
+  HomePage,
 } from "../pages";
 
 const AppRouting = () => {
   return (
     <>
       <BrowserRouter>
-        <header className="linkHeader">
-          <nav>
-            <ul className="linkfix">
-              <li className="linkfix">
-                <Link to="/">Home</Link>
-              </li>
-              <li className="linkfix">
-                <Link to="registrer">RegisterPage</Link>
-              </li>
-              <li className="linkfix">
-                <Link to="regnskap">CompanyBooksPage</Link>
-              </li>
-              <li className="linkfix">
-                <Link to="notfoundpage">NotFoundPage</Link>
-              </li>
-            </ul>
-          </nav>
-        </header>
-
-        <main>
-          <Routes>
-            <Route path="/" element={<AdminPage />}></Route>
-            <Route path="registrer" element={<RegisterPage />}></Route>
-            <Route path="regnskap" element={<CompanyBooksPage />}></Route>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />}></Route>
+            <Route path="/register" element={<AddNewAthletePage />}></Route>
+            <Route path="/finances" element={<FinancePage />}></Route>
             <Route path="*" element={<NotFoundPage />}></Route>
-          </Routes>
-        </main>
+          </Route>
+        </Routes>
       </BrowserRouter>
 
       <footer></footer>

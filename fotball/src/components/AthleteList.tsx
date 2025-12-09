@@ -24,12 +24,18 @@ const AthleteList = () => {
   };
 
   return (
-    <section className="section">
-      <h3 className="title xs-12">Fotball athletes</h3>
-      {athletes.map((athlete) => (
-        <AthleteItem key={athlete.id} player={athlete} />
-      ))}
-    </section>
+    <>
+      <h1 className="text-5xl text-center py-8 mb-8 text-green-950 bg-lime-50">
+        Football Athletes
+      </h1>
+      <div className="bg-white p-8">
+        <div className=" container grid grid-cols-4 gap-2 justify-items-center mb-8 ">
+          {athletes.map((athlete) => (
+            <AthleteItem key={athlete.id} player={athlete} />
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 export default AthleteList;

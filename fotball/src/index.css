@@ -1,6 +1,17 @@
 @import "tailwindcss";
 
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0 auto;
+  min-width: 320px;
+  min-height: 100vh;
+  max-width: 1440px;
+}
+
+/* body {
   background-image: linear-gradient(
       rgba(255, 255, 255, 0.459),
       rgba(255, 255, 255, 0.495)
@@ -125,4 +136,4 @@ body {
 
 .xs-12 {
   grid-column: auto / span 12;
-}
+} */

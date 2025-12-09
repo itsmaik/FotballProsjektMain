@@ -1,6 +1,6 @@
-import RegisterPage from "./RegisterPage";
-import AdminPage from "./AdminPage";
+import AddNewAthletePage from "./AddNewAthletePage";
+import HomePage from "./HomePage";
 import NotFoundPage from "./NotFoundPage";
-import CompanyBooksPage from "./CompanyBooksPage";
+import FinancePage from "./FinancePage";
 
-export { RegisterPage, AdminPage, NotFoundPage, CompanyBooksPage };
+export { AddNewAthletePage, HomePage, NotFoundPage, FinancePage };
