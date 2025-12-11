@@ -64,29 +64,50 @@ const AddNewAthlete = () => {
 
   return (
     <>
-      <h3>Legg til ny spiller!</h3>
-      <div>
-        <label>Navn </label>
-        <input ref={nameInput} className="input" type="text" />
+      <div className="bg-white rounded-xl shadow-md border border-slate-100 p-4 space-y-2 grid justify-center px-4 py-2 text-center">
+        <h3>Legg til ny spiller!</h3>
+        <div>
+          <input
+            ref={nameInput}
+            className="input shadow-md border border-slate-300 text-center"
+            type="text"
+            placeholder="Name"
+          />
+        </div>
+        <div>
+          <input
+            ref={priceInput}
+            className="input shadow-md border border-slate-300 text-center"
+            type="number"
+            placeholder="Kjøpspris"
+          />
+        </div>
+        <div>
+          <input
+            ref={genderInput}
+            className="input shadow-md border border-slate-300 text-center"
+            type="text"
+            placeholder="Kjønn"
+          />
+        </div>
+        <div>
+          <label>
+            Image
+            <input
+              onChange={imgChangeHandler}
+              className="input shadow-md border border-slate-300 p-4 text-center"
+              type="file"
+            />
+          </label>
+        </div>
+        <button
+          onClick={postNewAthlete}
+          className="button shadow-md border border-slate-300 text-center"
+        >
+          Lagre
+        </button>
+        <p>{statusMessage}</p>
       </div>
-      <div>
-        <label>Kjøpspris</label>
-        <input ref={priceInput} className="input" type="number" />
-      </div>
-      <div>
-        <label>Kjønn</label>
-        <input ref={genderInput} className="input" type="text" />
-      </div>
-      <div>
-        <label>
-          Image
-          <input onChange={imgChangeHandler} type="file" />
-        </label>
-      </div>
-      <button onClick={postNewAthlete} className="button">
-        Lagre
-      </button>
-      <p>{statusMessage}</p>
     </>
   );
 };
