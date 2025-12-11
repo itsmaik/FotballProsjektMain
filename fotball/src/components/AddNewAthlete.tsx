@@ -102,7 +102,7 @@ const AddNewAthlete = () => {
         </div>
         <button
           onClick={postNewAthlete}
-          className="button shadow-md border border-slate-300 text-center bg-amber-100 hover:bg-emerald-100"
+          className="button shadow-md border border-slate-300 text-center bg-emerald-100 hover:bg-amber-100"
         >
           Lagre
         </button>
