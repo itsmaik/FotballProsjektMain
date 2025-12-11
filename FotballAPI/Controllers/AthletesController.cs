@@ -17,12 +17,25 @@ public class AthletesController(FotballContext _fotballContext) : ControllerBase
         return athletes;
     }
 
+     
+    [HttpGet("{id}")] // GET: api/athletes/id
+    public async Task<ActionResult<Athlete>> GetById(int id)
+    {
+        Athlete? athlete = await _fotballContext.Athletes.FindAsync(id);
+
+        if (athlete == null)
+        {
+            return NotFound();
+        }
+
+        return athlete;
+    }
 
     // DELETE: api/athletes/id
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var athlete = await _fotballContext.Athletes.FindAsync(id);
+        Athlete? athlete = await _fotballContext.Athletes.FindAsync(id);
         if (athlete == null) return NotFound();
 
         _fotballContext.Athletes.Remove(athlete);
