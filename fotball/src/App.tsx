@@ -1,9 +1,12 @@
+import { AthletesProvider } from "./context/AthletesContext";
 import AppRouting from "./routing/AppRouting";
 
 function App() {
   return (
     <>
-      <AppRouting />
+      <AthletesProvider>
+        <AppRouting />
+      </AthletesProvider>
     </>
   );
 }

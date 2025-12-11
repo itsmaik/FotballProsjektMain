@@ -1,56 +1,46 @@
-import { createContext, useContext, useEffect, useState } from "react";
-
-import { IAthlete } from "../interfaces/Athlete";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import type { IAthlete } from "../interfaces/IAthlete";
+import type { IAthletesContext } from "../interfaces/IAthletesContext";
 import {
   getAthletes,
   createAthlete,
   updateAthlete,
   deleteAthlete,
-} from "../services/athleteService";
-import { purchaseAthlete } from "../services/purchaseService";
+} from "../services/AthleteService";
+// import { purchaseAthlete } from "../services/purchaseService";
 
-interface AthletesContextType {
-  athletes: IAthlete[];
-  isLoading: boolean;
-  error: string | null;
-
-  refreshAthletes: () => Promise<void>;
-  addAthlete: (athlete: IAthlete) => Promise<void>;
-  editAthlete: (athlete: IAthlete) => Promise<void>;
-  removeAthlete: (id: number) => Promise<void>;
-  purchase: (id: number) => Promise<void>;
+interface IAthletesProvider {
+  children: React.ReactNode;
 }
 
-const AthletesContext = createContext<AthletesContextType | undefined>(
+export const AthletesContext = createContext<IAthletesContext | undefined>(
   undefined
 );
 
-export function AthletesProvider({ children }: { children: ReactNode }) {
+export const AthletesProvider = ({ children }: IAthletesProvider) => {
   const [athletes, setAthletes] = useState<IAthlete[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load all athletes once when app loads
-  async function refreshAthletes() {
+  const refreshAthletes = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await getAthletes();
-      setAthletes(data);
+      const response = await getAthletes();
+      setAthletes(response.data ?? []);
     } catch (err) {
       console.error(err);
       setError("Could not load athletes");
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     refreshAthletes();
   }, []);
 
-  // Create new athlete
-  async function addAthlete(athlete: IAthlete) {
+  const addAthlete = async (athlete: IAthlete) => {
     try {
       await createAthlete(athlete);
       await refreshAthletes();
@@ -58,10 +48,9 @@ export function AthletesProvider({ children }: { children: ReactNode }) {
       console.error(err);
       setError("Could not create athlete");
     }
-  }
+  };
 
-  // Update athlete
-  async function editAthlete(athlete: IAthlete) {
+  const editAthlete = async (athlete: IAthlete) => {
     try {
       await updateAthlete(athlete);
       await refreshAthletes();
@@ -69,10 +58,9 @@ export function AthletesProvider({ children }: { children: ReactNode }) {
       console.error(err);
       setError("Could not update athlete");
     }
-  }
+  };
 
-  // Delete athlete
-  async function removeAthlete(id: number) {
+  const removeAthlete = async (id: number) => {
     try {
       await deleteAthlete(id);
       setAthletes((prev) => prev.filter((a) => a.id !== id));
@@ -80,20 +68,20 @@ export function AthletesProvider({ children }: { children: ReactNode }) {
       console.error(err);
       setError("Could not delete athlete");
     }
-  }
+  };
 
   // Purchase an athlete
-  async function purchase(id: number) {
-    try {
-      await purchaseAthlete(id);
-      await refreshAthletes();
-    } catch (err) {
-      console.error(err);
-      setError("Could not purchase athlete");
-    }
-  }
+  // const purchase = async (id: number) => {
+  //   try {
+  //     await purchaseAthlete(id);
+  //     await refreshAthletes();
+  //   } catch (err) {
+  //     console.error(err);
+  //     setError("Could not purchase athlete");
+  //   }
+  // };
 
-  const value: AthletesContextType = {
+  const value: IAthletesContext = {
     athletes,
     isLoading,
     error,
@@ -101,7 +89,6 @@ export function AthletesProvider({ children }: { children: ReactNode }) {
     addAthlete,
     editAthlete,
     removeAthlete,
-    purchase,
   };
 
   return (
@@ -109,12 +96,12 @@ export function AthletesProvider({ children }: { children: ReactNode }) {
       {children}
     </AthletesContext.Provider>
   );
-}
+};
 
-export function useAthletes() {
+export const useAthletes = () => {
   const ctx = useContext(AthletesContext);
   if (!ctx) {
     throw new Error("useAthletes must be used inside AthletesProvider");
   }
   return ctx;
-}
+};

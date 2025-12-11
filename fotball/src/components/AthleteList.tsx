@@ -1,27 +1,30 @@
 import { useState, useEffect } from "react";
-import AthleteService from "../services/AthleteService";
+// import AthleteService from "../services/AthleteService";
+import { useAthletes } from "../context/AthletesContext";
 import type { IAthlete } from "../interfaces/IAthlete";
 import AthleteItem from "./AthleteItem";
 
 const AthleteList = () => {
-  const [athletes, setAthletes] = useState<IAthlete[]>([]);
+  const { athletes } = useAthletes();
 
-  useEffect(() => {
-    getAndSetAllAthletes();
-  }, []);
+  // const [athletes, setAthletes] = useState<IAthlete[]>([]);
 
-  const getAndSetAllAthletes = async () => {
-    const athleteResponse = await AthleteService.getAthletes();
-    if (
-      athleteResponse.success == true &&
-      athleteResponse.data != null &&
-      Array.isArray(athleteResponse.data)
-    ) {
-      setAthletes(athleteResponse.data);
-    } else {
-      // TODO: Feilmelding til bruker
-    }
-  };
+  // useEffect(() => {
+  //   getAndSetAllAthletes();
+  // }, []);
+
+  // const getAndSetAllAthletes = async () => {
+  //   const athleteResponse = await AthleteService.getAthletes();
+  //   if (
+  //     athleteResponse.success == true &&
+  //     athleteResponse.data != null &&
+  //     Array.isArray(athleteResponse.data)
+  //   ) {
+  //     setAthletes(athleteResponse.data);
+  //   } else {
+  //     // TODO: Feilmelding til bruker
+  //   }
+  // };
 
   return (
     <>
