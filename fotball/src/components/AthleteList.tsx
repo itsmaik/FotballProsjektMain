@@ -11,7 +11,7 @@ const AthleteList = () => {
   }, []);
 
   const getAndSetAllAthletes = async () => {
-    const athleteResponse = await AthleteService.getAllAthletes();
+    const athleteResponse = await AthleteService.getAthletes();
     if (
       athleteResponse.success == true &&
       athleteResponse.data != null &&

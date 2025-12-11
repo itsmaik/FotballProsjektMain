@@ -5,22 +5,40 @@ import type { IFinance } from "../interfaces/IFinance";
 
 const baseUrl = "http://localhost:5212/api";
 
-const athletesEndpoint = "/athletes";
+const athletesEndpoint = "/athletes/";
 const venuesEndpoint = "venues";
 const financesEndpoint = "/finances";
 
-//SPILLERE
 interface IAthleteResponsList {
   success: boolean;
   data: IAthlete[] | null;
 }
 
-const getAllAthletes = async (): Promise<IAthleteResponsList> => {
+//Get all Athletes
+export const getAthletes = async (): Promise<IAthleteResponsList> => {
   try {
-    const playerResponse = await axios.get(baseUrl + athletesEndpoint);
+    const res = await axios.get(baseUrl + athletesEndpoint);
     return {
       success: true,
-      data: playerResponse.data,
+      data: res.data,
+    };
+  } catch {
+    return {
+      success: false,
+      data: null,
+    };
+  }
+};
+
+//Get all Athletes
+export const getAthletesById = async (
+  id: string
+): Promise<IAthleteResponsList> => {
+  try {
+    const res = await axios.get(baseUrl + athletesEndpoint + id);
+    return {
+      success: true,
+      data: res.data,
     };
   } catch {
     return {
@@ -34,14 +52,27 @@ interface IDefaultAthleteResponse {
   success: boolean;
 }
 
-const addNewAthlete = async (
+//Create new Athlete
+export const createAthlete = async (
   newPlayer: IAthlete
 ): Promise<IDefaultAthleteResponse> => {
   try {
-    const athletesResponse = await axios.post(
-      baseUrl + athletesEndpoint,
-      newPlayer
-    );
+    const res = await axios.post(baseUrl + athletesEndpoint, newPlayer);
+    return {
+      success: true,
+      data: res.data,
+    };
+  } catch {
+    return { success: false };
+  }
+};
+
+//Update Athletes Information
+export const updateAthlete = async (
+  athlete: IAthlete
+): Promise<IDefaultAthleteResponse> => {
+  try {
+    const res = await axios.put(`${URL}/${athlete.id}`, athlete);
     return {
       success: true,
     };
@@ -50,16 +81,21 @@ const addNewAthlete = async (
   }
 };
 
+//Delete an Athlete
+export const deleteAthlete = async (id: number): Promise<void> => {
+  const res = await axios.delete(`${URL}/${id}`);
+};
+
 interface IVenueResponsList {
   success: boolean;
   data: IVenue[] | null;
 }
-const getAllVenues = async (): Promise<IVenueResponsList> => {
+const getVenues = async (): Promise<IVenueResponsList> => {
   try {
-    const venueResponse = await axios.get(baseUrl + venuesEndpoint);
+    const res = await axios.get(baseUrl + venuesEndpoint);
     return {
       success: true,
-      data: venueResponse.data,
+      data: res.data,
     };
   } catch {
     return {
@@ -74,12 +110,12 @@ interface IFinanceResponsList {
   success: boolean;
   data: IFinance[] | null;
 }
-const getAllFinances = async (): Promise<IFinanceResponsList> => {
+const getFinance = async (): Promise<IFinanceResponsList> => {
   try {
-    const financeResponse = await axios.get(baseUrl + financesEndpoint);
+    const res = await axios.get(baseUrl + financesEndpoint);
     return {
       success: true,
-      data: financeResponse.data,
+      data: res.data,
     };
   } catch {
     return {
@@ -90,8 +126,10 @@ const getAllFinances = async (): Promise<IFinanceResponsList> => {
 };
 
 export default {
-  getAllAthletes,
-  getAllVenues,
-  getAllFinances,
-  addNewAthlete,
+  getAthletes,
+  createAthlete,
+  updateAthlete,
+  deleteAthlete,
+  getVenues,
+  getFinance,
 };
