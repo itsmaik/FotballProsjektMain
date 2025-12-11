@@ -65,7 +65,7 @@ const AddNewAthlete = () => {
   return (
     <>
       <div className="bg-white rounded-xl shadow-md border border-slate-100 p-4 space-y-2 grid justify-center px-4 py-2 text-center">
-        <h3>Legg til ny spiller!</h3>
+        <h3 className="font-bold">Legg til ny spiller!</h3>
         <div>
           <input
             ref={nameInput}
@@ -102,7 +102,7 @@ const AddNewAthlete = () => {
         </div>
         <button
           onClick={postNewAthlete}
-          className="button shadow-md border border-slate-300 text-center"
+          className="button shadow-md border border-slate-300 text-center bg-amber-100 hover:bg-emerald-100"
         >
           Lagre
         </button>
