@@ -9,7 +9,7 @@ export const getFinance = async (): Promise<IFinance> => {
   return res.data;
 };
 
-const updateFinance = async (finance: IFinance): Promise<void> => {
+export const updateFinance = async (finance: IFinance): Promise<void> => {
   if (!finance.id) throw new Error("Finance id is missing");
   await axios.put(baseUrl + financesEndpoint, finance);
 };

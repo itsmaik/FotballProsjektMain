@@ -32,7 +32,7 @@ const AthleteItem = ({ player }: { player: IAthlete }) => {
       <div>
         <button
           className="px-3 py-1 rounded bg-blue-600 text-white text-sm"
-          onClick={() => startEdit(athlete)}
+          onClick={() => startEdit(player)}
         >
           Edit
         </button>
