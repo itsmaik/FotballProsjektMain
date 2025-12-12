@@ -1,13 +1,11 @@
 import axios from "axios";
 import type { IAthlete } from "../interfaces/IAthlete";
 import type { IVenue } from "../interfaces/IVenue";
-import type { IFinance } from "../interfaces/IFinance";
 
 const baseUrl = "http://localhost:5212/api/";
 
 const athletesEndpoint = "athletes/";
 const venuesEndpoint = "venues";
-const financesEndpoint = "finances";
 const purchaseEndpoint = "purchase";
 
 interface IAthleteResponsList {
