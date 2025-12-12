@@ -14,7 +14,7 @@ const AthleteItem = ({ player }: { player: IAthlete }) => {
         {player.purchaseStatus ? (
           "Utilgjengelig for kjøp"
         ) : (
-          <button className="button">Kjøp Spiller</button>
+          <button className="">Kjøp Spiller</button>
         )}
       </h3>
     </article>

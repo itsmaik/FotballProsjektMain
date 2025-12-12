@@ -6,8 +6,8 @@ import {
   createAthlete,
   updateAthlete,
   deleteAthlete,
+  purchaseAthlete,
 } from "../services/AthleteService";
-// import { purchaseAthlete } from "../services/purchaseService";
 
 interface IAthletesProvider {
   children: React.ReactNode;
@@ -70,16 +70,15 @@ export const AthletesProvider = ({ children }: IAthletesProvider) => {
     }
   };
 
-  // Purchase an athlete
-  // const purchase = async (id: number) => {
-  //   try {
-  //     await purchaseAthlete(id);
-  //     await refreshAthletes();
-  //   } catch (err) {
-  //     console.error(err);
-  //     setError("Could not purchase athlete");
-  //   }
-  // };
+  const purchase = async (id: number) => {
+    try {
+      await purchaseAthlete(id);
+      await refreshAthletes();
+    } catch (err) {
+      console.error(err);
+      setError("Could not purchase athlete");
+    }
+  };
 
   const value: IAthletesContext = {
     athletes,
@@ -89,6 +88,7 @@ export const AthletesProvider = ({ children }: IAthletesProvider) => {
     addAthlete,
     editAthlete,
     removeAthlete,
+    purchase,
   };
 
   return (
