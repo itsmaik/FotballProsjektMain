@@ -1,9 +1,12 @@
 import AthleteService from "../services/AthleteService";
+import { useAthletes } from "../context/AthletesContext";
 import ImageService from "../services/ImageService";
 import { useRef, useState, type ChangeEvent } from "react";
 import type { IAthlete } from "../interfaces/IAthlete";
 
 const AddNewAthlete = () => {
+  const { addAthlete, isLoading } = useAthletes();
+
   const [statusMessage, setStatusMessage] =
     useState<string>("Legg til spillere!");
   const [image, setImage] = useState<File | null>(null);
@@ -39,9 +42,9 @@ const AddNewAthlete = () => {
         purchaseStatus: false,
       };
       const imgresponse = await ImageService.postNewImage(image);
-      const AthleteResponse = await AthleteService.addNewAthlete(newAthlete);
+      const AthleteResponse = await addAthlete(newAthlete);
 
-      if (AthleteResponse.success) {
+      if (!isLoading) {
         setStatusMessage(newAthlete.name + " er lagret! ");
 
         nameInput.current.value = "";
@@ -63,6 +66,7 @@ const AddNewAthlete = () => {
   };
 
   return (
+    // We need to create a form component to reuse on EDIT
     <>
       <div className="bg-white rounded-xl shadow-md border border-slate-100 p-4 space-y-2 grid justify-center px-4 py-2 text-center">
         <h3>Legg til ny spiller!</h3>

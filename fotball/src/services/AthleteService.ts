@@ -3,12 +3,12 @@ import type { IAthlete } from "../interfaces/IAthlete";
 import type { IVenue } from "../interfaces/IVenue";
 import type { IFinance } from "../interfaces/IFinance";
 
-const baseUrl = "http://localhost:5212/api";
+const baseUrl = "http://localhost:5212/api/";
 
-const athletesEndpoint = "/athletes";
-const venuesEndpoint = "/venues";
-const financesEndpoint = "/finances";
-const purchaseEndpoint = "/purchase";
+const athletesEndpoint = "athletes/";
+const venuesEndpoint = "venues";
+const financesEndpoint = "finances";
+const purchaseEndpoint = "purchase";
 
 interface IAthleteResponsList {
   success: boolean;
@@ -84,7 +84,7 @@ export const updateAthlete = async (
 
 //Delete an Athlete
 export const deleteAthlete = async (id: number): Promise<void> => {
-  const res = await axios.delete(`${URL}/${id}`);
+  const res = await axios.delete(baseUrl + athletesEndpoint + id);
 };
 
 export const purchaseAthlete = async (athleteId: number) => {
