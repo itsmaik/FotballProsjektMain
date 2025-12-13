@@ -21,6 +21,7 @@ export const AthletesProvider = ({ children }: IAthletesProvider) => {
   const [athletes, setAthletes] = useState<IAthlete[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const refreshAthletes = async () => {
     try {
@@ -84,6 +85,8 @@ export const AthletesProvider = ({ children }: IAthletesProvider) => {
     athletes,
     isLoading,
     error,
+    searchQuery,
+    setSearchQuery,
     refreshAthletes,
     addAthlete,
     editAthlete,

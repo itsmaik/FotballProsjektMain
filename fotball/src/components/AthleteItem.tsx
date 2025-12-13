@@ -14,7 +14,7 @@ const AthleteItem = ({ player }: { player: IAthlete }) => {
     <article className="bg-white shadow rounded-lg p-4 flex flex-col gap-2">
       <h2 className="font-bold">{player.name}</h2>
       <img
-        className="w-full min-h-72 max-h-72 object-cover rounded-md"
+        className="w-full h-full object-cover rounded-md"
         src={`http://localhost:5212/images/athletes/${player.image}`}
         alt=""
       />
