@@ -32,7 +32,7 @@ const AthleteList = () => {
         Football Athletes
       </h1>
       <div className="bg-white p-8">
-        <div className=" container grid grid-cols-4 gap-2 justify-items-center mb-8 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
           {athletes.map((athlete) => (
             <AthleteItem key={athlete.id} player={athlete} />
           ))}

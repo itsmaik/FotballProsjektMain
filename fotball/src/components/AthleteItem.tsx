@@ -11,25 +11,25 @@ const AthleteItem = ({ player }: { player: IAthlete }) => {
   };
 
   return (
-    <article className="w-64 p-2 border-2 rounded border-gray-200 shadow-lg shadow-gray-300/50">
+    <article className="bg-white shadow rounded-lg p-4 flex flex-col gap-2">
       <h2 className="font-bold">{player.name}</h2>
       <img
-        className="h-60 w-full object-cover"
+        className="w-full min-h-72 max-h-72 object-cover rounded-md"
         src={`http://localhost:5212/images/athletes/${player.image}`}
         alt=""
       />
-      <h4>Price: {player.price}M</h4>
-      <h3>
+      <p>Price: {player.price}M</p>
+      <p>
         {player.purchaseStatus ? (
           "Utilgjengelig for kjøp"
         ) : (
-          <button className="px-3 py-1 rounded bg-green-400 text-white text-sm">
+          <button className="w-full px-3 py-1 rounded bg-green-600 text-white text-sm">
             Kjøp Spiller
           </button>
         )}
-      </h3>
+      </p>
 
-      <div>
+      <div className="flex justify-center gap-4">
         <button
           className="px-3 py-1 rounded bg-blue-600 text-white text-sm"
           onClick={() => startEdit(player)}
