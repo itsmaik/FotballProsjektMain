@@ -2,7 +2,7 @@ import axios from "axios";
 import type { IFinance } from "../interfaces/IFinance";
 
 const baseUrl = "http://localhost:5212/api/";
-const financesEndpoint = "finances";
+export const financesEndpoint = "finances";
 
 export const getFinance = async (): Promise<IFinance> => {
   const res = await axios.get<IFinance>(baseUrl + financesEndpoint);

@@ -1,6 +1,12 @@
 import axios from "axios";
 import type { IAthlete } from "../interfaces/IAthlete";
-import type { IVenue } from "../interfaces/IVenue";
+import { financesEndpoint } from "./FinanceService";
+import type {
+  IAthletesResponseList,
+  IAthleteResponse,
+  IVenuesResponseList,
+  IFinanceResponseList,
+} from "../interfaces/IApiRespons";
 
 const baseUrl = "http://localhost:5212/api/";
 
@@ -8,13 +14,8 @@ const athletesEndpoint = "athletes/";
 const venuesEndpoint = "venues";
 const purchaseEndpoint = "purchase";
 
-interface IAthleteResponsList {
-  success: boolean;
-  data: IAthlete[] | null;
-}
-
 //Get all Athletes
-export const getAthletes = async (): Promise<IAthleteResponsList> => {
+export const getAthletes = async (): Promise<IAthletesResponseList | null> => {
   try {
     const res = await axios.get(baseUrl + athletesEndpoint);
     return {
@@ -29,10 +30,10 @@ export const getAthletes = async (): Promise<IAthleteResponsList> => {
   }
 };
 
-//Get all Athletes
+//Get one Athlete
 export const getAthletesById = async (
   id: string
-): Promise<IAthleteResponsList> => {
+): Promise<IAthleteResponse | null> => {
   try {
     const res = await axios.get(baseUrl + athletesEndpoint + id);
     return {
@@ -47,14 +48,10 @@ export const getAthletesById = async (
   }
 };
 
-interface IDefaultAthleteResponse {
-  success: boolean;
-}
-
 //Create new Athlete
 export const createAthlete = async (
   newPlayer: IAthlete
-): Promise<IDefaultAthleteResponse> => {
+): Promise<IAthleteResponse | null> => {
   try {
     const res = await axios.post(baseUrl + athletesEndpoint, newPlayer);
     return {
@@ -62,21 +59,28 @@ export const createAthlete = async (
       data: res.data,
     };
   } catch {
-    return { success: false };
+    return {
+      success: false,
+      data: null,
+    };
   }
 };
 
 //Update Athletes Information
 export const updateAthlete = async (
   athlete: IAthlete
-): Promise<IDefaultAthleteResponse> => {
+): Promise<IAthleteResponse | null> => {
   try {
     const res = await axios.put(`${URL}/${athlete.id}`, athlete);
     return {
       success: true,
+      data: res.data,
     };
   } catch {
-    return { success: false };
+    return {
+      success: false,
+      data: null,
+    };
   }
 };
 
@@ -90,11 +94,8 @@ export const purchaseAthlete = async (athleteId: number) => {
   return res.data;
 };
 
-interface IVenueResponsList {
-  success: boolean;
-  data: IVenue[] | null;
-}
-const getVenues = async (): Promise<IVenueResponsList> => {
+//Venues
+const getVenues = async (): Promise<IVenuesResponseList | null> => {
   try {
     const res = await axios.get(baseUrl + venuesEndpoint);
     return {
@@ -110,11 +111,7 @@ const getVenues = async (): Promise<IVenueResponsList> => {
 };
 
 //FIRMA
-interface IFinanceResponsList {
-  success: boolean;
-  data: IFinance[] | null;
-}
-const getFinance = async (): Promise<IFinanceResponsList> => {
+const getFinance = async (): Promise<IFinanceResponseList | null> => {
   try {
     const res = await axios.get(baseUrl + financesEndpoint);
     return {

@@ -12,7 +12,7 @@ const AddNewAthlete = () => {
 
   const nameInput = useRef<HTMLInputElement | null>(null);
   const priceInput = useRef<HTMLInputElement | null>(null);
-  const genderInput = useRef<HTMLInputElement | null>(null);
+  const genderInput = useRef<HTMLSelectElement | null>(null);
 
   const imgChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -30,13 +30,13 @@ const AddNewAthlete = () => {
       nameInput.current &&
       nameInput.current.value.trim() != "" &&
       genderInput.current &&
-      genderInput.current.value.trim() != "" &&
+      genderInput.current.value != "" &&
       image
     ) {
       const newAthlete: IAthlete = {
         name: nameInput.current.value,
         image: image.name,
-        gender: genderInput.current.value,
+        gender: genderInput.current!.value as IAthlete["gender"],
         price: Number(priceInput.current.value),
         purchaseStatus: false,
       };
@@ -66,17 +66,6 @@ const AddNewAthlete = () => {
 
   return (
     <>
-<<<<<<< HEAD
-      <div className="bg-white rounded-xl shadow-md border border-slate-100 p-4 space-y-2 grid justify-center px-4 py-2 text-center">
-        <h3 className="font-bold">Legg til ny spiller!</h3>
-        <div>
-          <input
-            ref={nameInput}
-            className="input shadow-md border border-slate-300 text-center"
-            type="text"
-            placeholder="Name"
-          />
-=======
       <div className="mx-auto w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="mb-5 text-center">
           <h3 className="text-lg font-semibold text-slate-900">
@@ -85,7 +74,6 @@ const AddNewAthlete = () => {
           <p className="mt-1 text-sm text-slate-500">
             Fyll inn info og last opp et bilde.
           </p>
->>>>>>> 8deb2bc118c5006bd3db7d360948092b30a82fb1
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -119,16 +107,19 @@ const AddNewAthlete = () => {
 
           {/* Gender */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
-              Kjønn
-            </label>
-            <input
+            <select
               ref={genderInput}
-              type="text"
-              placeholder="M / K"
               className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm outline-none transition
-                      placeholder:text-slate-400 focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
-            />
+                        focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Velg kjønn
+              </option>
+              <option value="Male">Mann</option>
+              <option value="Female">Kvinne</option>
+              <option value="Other">Annet</option>
+            </select>
           </div>
 
           {/* Image */}
@@ -172,16 +163,6 @@ const AddNewAthlete = () => {
             </p>
           ) : null}
         </div>
-<<<<<<< HEAD
-        <button
-          onClick={postNewAthlete}
-          className="button shadow-md border border-slate-300 text-center bg-emerald-100 hover:bg-amber-100"
-        >
-          Lagre
-        </button>
-        <p>{statusMessage}</p>
-=======
->>>>>>> 8deb2bc118c5006bd3db7d360948092b30a82fb1
       </div>
     </>
   );
