@@ -1,9 +1,15 @@
+import { AthletesProvider } from "./context/AthletesContext";
+import { FinanceProvider } from "./context/FinanceContext";
 import AppRouting from "./routing/AppRouting";
 
 function App() {
   return (
     <>
-      <AppRouting />
+      <AthletesProvider>
+        <FinanceProvider>
+          <AppRouting />
+        </FinanceProvider>
+      </AthletesProvider>
     </>
   );
 }

@@ -9,16 +9,17 @@ namespace FotballAPI.Controllers;
 [Route("api/[controller]")]
 
 public class AthletesController(FotballContext _fotballContext) : ControllerBase
-{
-    [HttpGet] // GET: api/athletes
+{   
+    // GET=> api/athletes
+    [HttpGet] 
     public async Task<List<Athlete>> GetAll()
     {
         List<Athlete> athletes = await _fotballContext.Athletes.ToListAsync();
         return athletes;
     }
 
-     
-    [HttpGet("{id}")] // GET: api/athletes/id
+    // GET=> api/athletes/id
+    [HttpGet("{id}")]
     public async Task<ActionResult<Athlete>> GetById(int id)
     {
         Athlete? athlete = await _fotballContext.Athletes.FindAsync(id);
@@ -28,10 +29,10 @@ public class AthletesController(FotballContext _fotballContext) : ControllerBase
             return NotFound();
         }
 
-        return athlete;
+        return Ok(athlete);
     }
 
-    // DELETE: api/athletes/id
+    // DELETE=> api/athletes/id
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -39,38 +40,39 @@ public class AthletesController(FotballContext _fotballContext) : ControllerBase
         if (athlete == null) return NotFound();
 
         _fotballContext.Athletes.Remove(athlete);
-        await _fotballContext.SaveChangesAsync();
-        return NoContent();
+
+        try
+        {
+            await _fotballContext.SaveChangesAsync();
+            return NoContent();
+        }
+        catch (DbUpdateException)
+        {
+            return Problem("Could not delete athlete.", statusCode: 500);
+        }
     }
 
-    private bool AthleteExists(int id)
-    {
-        return _fotballContext.Athletes.Any(a => a.Id == id);
-    }
 
-    
-
+    // UPDATE=> api/athletes/id
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, Athlete athlete)
     {
-        if (id != athlete.Id) return BadRequest("Id mismatch");
+        if (id != athlete.Id) return BadRequest("Id mismatch between route and body");
 
         _fotballContext.Entry(athlete).State = EntityState.Modified;
 
         try
         {
             await _fotballContext.SaveChangesAsync();
+            return NoContent();
         }
-        catch (DbUpdateConcurrencyException)
+        catch (DbUpdateException)
         {
-            if (!AthleteExists(id)) return NotFound();
-            throw;
+            return Problem("Could not update athlete.", statusCode: 500);
         }
-
-        return NoContent();
     }
 
-
+    // CREATE=> api/athletes/id
     [HttpPost]
     public async Task<ActionResult> Post(Athlete newAthlete)
     {
@@ -80,9 +82,9 @@ public class AthletesController(FotballContext _fotballContext) : ControllerBase
             await _fotballContext.SaveChangesAsync();
             return Created();
         }
-        catch
+        catch (DbUpdateException)
         {
-            return StatusCode(500);
+            return Problem("Could not create athlete.", statusCode: 500);
         }
     }
 
