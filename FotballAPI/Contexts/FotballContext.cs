@@ -9,7 +9,7 @@ DbContext(options)
     // Models.navn = FotballPlayer .. Tabell.navn = FotballPlayers
     public DbSet<Athlete> Athletes { get; set; } 
 
-    public DbSet<Finance> Finances { get; set; } //  siden vi bare skal ha data for et firma.
+    public DbSet<Finance> Finances { get; set; } 
 
     public DbSet<Venue> Venues { get; set; }
 }

@@ -28,7 +28,7 @@ export const AthletesProvider = ({ children }: IAthletesProvider) => {
       setIsLoading(true);
       setError(null);
       const response = await getAthletes();
-      setAthletes(response.data ?? []);
+      setAthletes(response?.data ?? []);
     } catch (err) {
       console.error(err);
       setError("Could not load athletes");

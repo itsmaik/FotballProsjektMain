@@ -3,7 +3,6 @@ import type { IVenue } from "./IVenue";
 import type { IFinance } from "./IFinance";
 
 // T = placholder for et Interface
-//  (som vi merger etterpå senere ved med typescript.)
 export interface IApiResponse<T> {
   success: boolean;
   data: T | null;
