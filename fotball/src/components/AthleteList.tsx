@@ -4,6 +4,8 @@ import AthleteItem from "./AthleteItem";
 const AthleteList = () => {
   const { athletes, searchQuery } = useAthletes();
 
+  console.log(athletes);
+
   const filteredAthletes = athletes.filter((a) =>
     a.name.toLowerCase().includes(searchQuery.trim().toLowerCase())
   );

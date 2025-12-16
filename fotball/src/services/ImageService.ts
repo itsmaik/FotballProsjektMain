@@ -1,13 +1,12 @@
 import axios from "axios";
-
-const imageUploadEndpoint = "http://localhost:5212/ImageUpload";
+import { path } from "../services/PathService";
 
 const postNewImage = async (image: File) => {
   const formData = new FormData();
   formData.append("file", image);
 
   const response = await axios({
-    url: imageUploadEndpoint,
+    url: path.imageUploadEndpoint,
     method: "POST",
     data: formData,
     headers: { "Content-Type": "multipart/form-data" },

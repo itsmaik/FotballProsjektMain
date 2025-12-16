@@ -98,8 +98,7 @@ const AddNewAthlete = () => {
               ref={nameInput}
               type="text"
               placeholder="F.eks. Erling Haaland"
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm outline-none transition
-                      placeholder:text-slate-400 focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
+              className="input"
             />
           </div>
 
@@ -112,8 +111,7 @@ const AddNewAthlete = () => {
               ref={priceInput}
               type="number"
               placeholder="F.eks. 2500000"
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm outline-none transition
-                      placeholder:text-slate-400 focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
+              className="input"
             />
           </div>
 
@@ -126,8 +124,7 @@ const AddNewAthlete = () => {
               ref={genderInput}
               type="text"
               placeholder="M / K"
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm outline-none transition
-                      placeholder:text-slate-400 focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
+              className="input"
             />
           </div>
 

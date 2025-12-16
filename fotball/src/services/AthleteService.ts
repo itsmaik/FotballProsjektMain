@@ -1,12 +1,13 @@
 import axios from "axios";
 import type { IAthlete } from "../interfaces/IAthlete";
 import type { IVenue } from "../interfaces/IVenue";
+import { path } from "./PathService";
 
-const baseUrl = "http://localhost:5212/api/";
+// const baseUrl = "http://localhost:5212/api/";
 
-const athletesEndpoint = "athletes/";
-const venuesEndpoint = "venues";
-const purchaseEndpoint = "purchase";
+// const athletesEndpoint = "athletes/";
+// const venuesEndpoint = "venues";
+// const purchaseEndpoint = "purchase";
 
 interface IAthleteResponsList {
   success: boolean;
@@ -16,7 +17,7 @@ interface IAthleteResponsList {
 //Get all Athletes
 export const getAthletes = async (): Promise<IAthleteResponsList> => {
   try {
-    const res = await axios.get(baseUrl + athletesEndpoint);
+    const res = await axios.get(path.baseUrl + path.athletesEndpoint);
     return {
       success: true,
       data: res.data,
@@ -34,7 +35,7 @@ export const getAthletesById = async (
   id: string
 ): Promise<IAthleteResponsList> => {
   try {
-    const res = await axios.get(baseUrl + athletesEndpoint + id);
+    const res = await axios.get(path.baseUrl + path.athletesEndpoint + id);
     return {
       success: true,
       data: res.data,
@@ -56,7 +57,10 @@ export const createAthlete = async (
   newPlayer: IAthlete
 ): Promise<IDefaultAthleteResponse> => {
   try {
-    const res = await axios.post(baseUrl + athletesEndpoint, newPlayer);
+    const res = await axios.post(
+      path.baseUrl + path.athletesEndpoint,
+      newPlayer
+    );
     return {
       success: true,
       data: res.data,
@@ -82,11 +86,13 @@ export const updateAthlete = async (
 
 //Delete an Athlete
 export const deleteAthlete = async (id: number): Promise<void> => {
-  const res = await axios.delete(baseUrl + athletesEndpoint + id);
+  const res = await axios.delete(path.baseUrl + path.athletesEndpoint + id);
 };
 
 export const purchaseAthlete = async (athleteId: number) => {
-  const res = await axios.post(baseUrl + purchaseEndpoint + athleteId);
+  const res = await axios.post(
+    path.baseUrl + path.purchaseEndpoint + athleteId
+  );
   return res.data;
 };
 
@@ -96,7 +102,7 @@ interface IVenueResponsList {
 }
 const getVenues = async (): Promise<IVenueResponsList> => {
   try {
-    const res = await axios.get(baseUrl + venuesEndpoint);
+    const res = await axios.get(path.baseUrl + path.venuesEndpoint);
     return {
       success: true,
       data: res.data,
@@ -116,7 +122,7 @@ interface IFinanceResponsList {
 }
 const getFinance = async (): Promise<IFinanceResponsList> => {
   try {
-    const res = await axios.get(baseUrl + financesEndpoint);
+    const res = await axios.get(path.baseUrl + path.financesEndpoint);
     return {
       success: true,
       data: res.data,
