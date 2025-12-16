@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFinance } from "../../context/FinanceContext";
 import { useAthletes } from "../../context/AthletesContext";
 import type { IAthlete } from "../../interfaces/IAthlete";
+import Feedback from "../globals/Feedback";
 
 export default function Dashboard() {
   const {
@@ -20,13 +21,20 @@ export default function Dashboard() {
     refreshAthletes,
   } = useAthletes();
 
-  const [loanInput, setLoanInput] = useState<number>(0);
+  const [loanInput, setLoanInput] = useState<number | "">("");
   const [purchaseError, setPurchaseError] = useState<string | null>(null);
 
+  type Msg = { text: string; variant: "success" | "error" };
+  const [msg, setMsg] = useState<Msg | null>(null);
+
+  const purchasableAthletes = athletes.filter((a) => !a.purchaseStatus);
+
   const handleLoan = async () => {
-    if (loanInput <= 0) return;
-    await takeLoanAmount(loanInput);
-    setLoanInput(0);
+    if (loanInput === "" || loanInput <= 0) return;
+    await takeLoanAmount(Number(loanInput));
+    setMsg({ text: "Penger lagt til ✅", variant: "success" });
+    setLoanInput("");
+    setTimeout(() => setMsg(null), 2500);
   };
 
   const handlePurchase = async (athlete: IAthlete) => {
@@ -35,17 +43,21 @@ export default function Dashboard() {
     setPurchaseError(null);
 
     if (finance.moneyLeft < athlete.price) {
-      setPurchaseError("Not enough money to purchase this athlete.");
+      setPurchaseError("Du har ikke nok penger til å kjøpe denne spilleren.");
       return;
     }
 
-    try {
-      await purchaseAthlete(athlete.id!);
+    const ok = await purchaseAthlete(athlete.id!);
+
+    if (ok) {
       await refreshFinance();
-    } catch (err) {
-      console.error(err);
-      setPurchaseError("Could not complete purchase.");
+      await refreshAthletes();
+      setMsg({ text: "Kjøpt ✅", variant: "success" });
+    } else {
+      setMsg({ text: "Kunne ikke kjøpe spiller.", variant: "error" });
     }
+
+    setTimeout(() => setMsg(null), 2500);
   };
 
   return (
@@ -57,7 +69,8 @@ export default function Dashboard() {
         <h2 className="text-xl font-semibold mb-3">Financial situation</h2>
 
         {financeLoading && <p>Loading finance...</p>}
-        {financeError && <p className="text-red-600">{financeError}</p>}
+
+        <Feedback message={financeError} variant="error" className="mb-3" />
 
         {finance && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -82,6 +95,14 @@ export default function Dashboard() {
       {/* Section 2: Take loan */}
       <section className="bg-white shadow rounded-lg p-4 max-w-md">
         <h2 className="text-xl font-semibold mb-3">Get more money (loan)</h2>
+
+        <Feedback
+          message={msg?.text ?? null}
+          variant={msg?.variant}
+          onClose={() => setMsg(null)}
+          className="mb-3"
+        />
+
         <div className="flex gap-2 items-center">
           <input
             type="number"
@@ -89,11 +110,14 @@ export default function Dashboard() {
             placeholder="Loan amount"
             min={0}
             value={loanInput}
-            onChange={(e) => setLoanInput(Number(e.target.value))}
+            onChange={(e) =>
+              setLoanInput(e.target.value === "" ? "" : Number(e.target.value))
+            }
           />
           <button
             className="bg-emerald-600 text-white rounded px-4 py-2"
             onClick={handleLoan}
+            disabled={loanInput === "" || loanInput <= 0}
           >
             Add
           </button>
@@ -104,16 +128,25 @@ export default function Dashboard() {
       <section className="bg-white shadow rounded-lg p-4">
         <h2 className="text-xl font-semibold mb-3">Purchase athletes</h2>
 
-        {purchaseError && <p className="mb-3 text-red-600">{purchaseError}</p>}
-        {athletesError && <p className="mb-3 text-red-600">{athletesError}</p>}
+        <Feedback
+          message={msg?.text ?? purchaseError}
+          variant={msg?.variant ?? (purchaseError ? "error" : "success")}
+          onClose={() => {
+            setMsg(null);
+            setPurchaseError(null);
+          }}
+          className="mb-3"
+        />
+
+        <Feedback message={athletesError} variant="error" className="mb-3" />
 
         {athletesLoading ? (
           <p>Loading athletes...</p>
-        ) : athletes.length === 0 ? (
+        ) : purchasableAthletes.length === 0 ? (
           <p>No available athletes to purchase.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {athletes.map((athlete) => (
+            {purchasableAthletes.map((athlete) => (
               <article
                 key={athlete.id}
                 className="border rounded-lg p-3 flex flex-col gap-2"
@@ -123,8 +156,10 @@ export default function Dashboard() {
                   Gender: {athlete.gender}
                 </p>
                 <p className="text-sm">Price: {athlete.price}</p>
+
                 <button
-                  className="mt-2 bg-indigo-600 text-white rounded px-3 py-1 text-sm"
+                  className="mt-2 bg-indigo-600 text-white rounded px-3 py-1 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={!finance || finance.moneyLeft < athlete.price}
                   onClick={() => handlePurchase(athlete)}
                 >
                   Purchase

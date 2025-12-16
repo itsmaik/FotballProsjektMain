@@ -2,17 +2,20 @@ import { useState, type ChangeEvent } from "react";
 import { useAthletes } from "../context/AthletesContext";
 import ImageService from "../services/ImageService";
 import type { IAthlete } from "../interfaces/IAthlete";
+import Feedback from "./globals/Feedback";
 
 export default function AddNewAthlete() {
   const { addAthlete } = useAthletes();
 
-  const [statusMessage, setStatusMessage] = useState<string | null>(
-    "Legg til spillere!"
-  );
+  type Msg = { text: string; variant: "success" | "error" };
+  const [msg, setMsg] = useState<Msg | null>({
+    text: "Legg til spillere!",
+    variant: "success",
+  });
 
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState<number | "">("");
   const [image, setImage] = useState<File | null>(null);
 
   const imgChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +26,17 @@ export default function AddNewAthlete() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name.trim() || !gender.trim() || price <= 0 || !image) {
-      setStatusMessage("Du må fylle ut alle felter + velge bilde!");
+    if (
+      !name.trim() ||
+      !gender.trim() ||
+      price === "" ||
+      price <= 0 ||
+      !image
+    ) {
+      setMsg({
+        text: "Du må fylle ut alle felter + velge bilde!",
+        variant: "error",
+      });
       return;
     }
 
@@ -42,19 +54,19 @@ export default function AddNewAthlete() {
       const ok = await addAthlete(newAthlete);
 
       if (ok) {
-        setStatusMessage(`${newAthlete.name} er lagret!`);
+        setMsg({ text: `${newAthlete.name} er lagret!`, variant: "success" });
         setName("");
         setGender("");
-        setPrice(0);
+        setPrice("");
         setImage(null);
       } else {
-        setStatusMessage("Kunne ikke lagre spilleren.");
+        setMsg({ text: "Kunne ikke lagre spilleren.", variant: "error" });
       }
     } catch (err) {
       console.error(err);
-      setStatusMessage("Kunne ikke lagre spilleren.");
+      setMsg({ text: "Kunne ikke lagre spilleren.", variant: "error" });
     } finally {
-      setTimeout(() => setStatusMessage(null), 4000);
+      setTimeout(() => setMsg(null), 4000);
     }
   };
 
@@ -85,9 +97,12 @@ export default function AddNewAthlete() {
             <input
               type="number"
               className="input"
+              placeholder="F.eks. 2000"
               value={price}
               min={0}
-              onChange={(e) => setPrice(Number(e.target.value))}
+              onChange={(e) =>
+                setPrice(e.target.value === "" ? "" : Number(e.target.value))
+              }
             />
           </div>
 
@@ -134,9 +149,11 @@ export default function AddNewAthlete() {
           Lagre
         </button>
 
-        {statusMessage ? (
-          <p className="text-center text-sm text-slate-600">{statusMessage}</p>
-        ) : null}
+        <Feedback
+          message={msg?.text ?? null}
+          variant={msg?.variant}
+          onClose={() => setMsg(null)}
+        />
       </form>
     </div>
   );
