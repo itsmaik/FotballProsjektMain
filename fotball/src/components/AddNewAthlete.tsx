@@ -1,74 +1,64 @@
+import { useState, type ChangeEvent } from "react";
 import { useAthletes } from "../context/AthletesContext";
 import ImageService from "../services/ImageService";
-import { useRef, useState, type ChangeEvent } from "react";
 import type { IAthlete } from "../interfaces/IAthlete";
 
-const AddNewAthlete = () => {
-  const { addAthlete, isLoading } = useAthletes();
+export default function AddNewAthlete() {
+  const { addAthlete } = useAthletes();
 
-  const [statusMessage, setStatusMessage] =
-    useState<string>("Legg til spillere!");
+  const [statusMessage, setStatusMessage] = useState<string | null>(
+    "Legg til spillere!"
+  );
+
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
+  const [price, setPrice] = useState<number>(0);
   const [image, setImage] = useState<File | null>(null);
 
-  const nameInput = useRef<HTMLInputElement | null>(null);
-  const priceInput = useRef<HTMLInputElement | null>(null);
-  const genderInput = useRef<HTMLInputElement | null>(null);
-
   const imgChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const { files } = e.target;
-
-    if (files != null) {
-      setImage(files[0]);
-      console.log(files[0]);
-    }
+    const files = e.target.files;
+    if (files && files.length > 0) setImage(files[0]);
   };
 
-  const postNewAthlete = async () => {
-    if (
-      priceInput.current &&
-      priceInput.current?.value != "" &&
-      nameInput.current &&
-      nameInput.current.value.trim() != "" &&
-      genderInput.current &&
-      genderInput.current.value.trim() != "" &&
-      image
-    ) {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!name.trim() || !gender.trim() || price <= 0 || !image) {
+      setStatusMessage("Du må fylle ut alle felter + velge bilde!");
+      return;
+    }
+
+    try {
+      await ImageService.postNewImage(image);
+
       const newAthlete: IAthlete = {
-        name: nameInput.current.value,
+        name: name.trim(),
+        gender: gender.trim(),
+        price: Number(price),
         image: image.name,
-        gender: genderInput.current.value,
-        price: Number(priceInput.current.value),
         purchaseStatus: false,
       };
-      const imgresponse = await ImageService.postNewImage(image);
-      const AthleteResponse = await addAthlete(newAthlete);
 
-      if (!isLoading) {
-        setStatusMessage(newAthlete.name + " er lagret! ");
+      await addAthlete(newAthlete);
 
-        nameInput.current.value = "";
-        priceInput.current.value = "";
-        genderInput.current.value = "";
-      } else {
-        setStatusMessage(newAthlete.name + " - er ikke lagret!");
-
-        nameInput.current.value = "";
-        priceInput.current.value = "";
-        genderInput.current.value = "";
-      }
-    } else {
-      setStatusMessage("Du må fylle ut alle felter!");
+      setStatusMessage(`${newAthlete.name} er lagret!`);
+      setName("");
+      setGender("");
+      setPrice(0);
+      setImage(null);
+    } catch (err) {
+      console.error(err);
+      setStatusMessage("Kunne ikke lagre spilleren.");
+    } finally {
+      setTimeout(() => setStatusMessage(null), 4000);
     }
-    setTimeout(() => {
-      setStatusMessage("");
-    }, 5000);
   };
 
   return (
-    <>
-      <div className="bg-white rounded-xl shadow-md border border-slate-100 p-4 space-y-2 grid justify-center px-4 py-2 text-center">
-        <h3 className="font-bold">Legg til ny spiller!</h3>
+    <div className="bg-white rounded-xl shadow-md border border-slate-100 p-6 max-w-3xl mx-auto">
+      <h3 className="font-bold text-center mb-4">Legg til ny spiller!</h3>
 
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Name */}
           <div className="sm:col-span-2">
@@ -76,10 +66,10 @@ const AddNewAthlete = () => {
               Navn
             </label>
             <input
-              ref={nameInput}
-              type="text"
-              placeholder="F.eks. Erling Haaland"
               className="input"
+              placeholder="F.eks. Erling Haaland"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
 
@@ -89,10 +79,11 @@ const AddNewAthlete = () => {
               Kjøpspris
             </label>
             <input
-              ref={priceInput}
               type="number"
-              placeholder="F.eks. 2500000"
               className="input"
+              value={price}
+              min={0}
+              onChange={(e) => setPrice(Number(e.target.value))}
             />
           </div>
 
@@ -102,10 +93,10 @@ const AddNewAthlete = () => {
               Kjønn
             </label>
             <input
-              ref={genderInput}
-              type="text"
-              placeholder="M / K"
               className="input"
+              placeholder="M / K"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
             />
           </div>
 
@@ -115,11 +106,8 @@ const AddNewAthlete = () => {
               Bilde
             </label>
 
-            <label
-              className="flex cursor-pointer items-center justify-between gap-3 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-sm text-slate-600
-                            hover:bg-slate-100"
-            >
-              <span>Velg fil…</span>
+            <label className="flex cursor-pointer items-center justify-between gap-3 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-sm text-slate-600 hover:bg-slate-100">
+              <span>{image ? image.name : "Velg fil…"}</span>
               <span className="rounded-lg bg-white px-2 py-1 text-xs text-slate-500 shadow-sm">
                 PNG/JPG
               </span>
@@ -135,23 +123,17 @@ const AddNewAthlete = () => {
         </div>
 
         {/* Actions */}
-        <div className="mt-6 flex flex-col gap-3">
-          <button
-            onClick={postNewAthlete}
-            className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm
-                    hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200 active:scale-[0.99]"
-          >
-            Lagre
-          </button>
+        <button
+          type="submit"
+          className="w-full inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200"
+        >
+          Lagre
+        </button>
 
-          {statusMessage ? (
-            <p className="text-center text-sm text-slate-600">
-              {statusMessage}
-            </p>
-          ) : null}
-        </div>
-      </div>
-    </>
+        {statusMessage ? (
+          <p className="text-center text-sm text-slate-600">{statusMessage}</p>
+        ) : null}
+      </form>
+    </div>
   );
-};
-export default AddNewAthlete;
+}

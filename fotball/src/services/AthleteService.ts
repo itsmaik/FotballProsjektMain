@@ -75,7 +75,10 @@ export const updateAthlete = async (
   athlete: IAthlete
 ): Promise<IDefaultAthleteResponse> => {
   try {
-    const res = await axios.put(`${URL}/${athlete.id}`, athlete);
+    const res = await axios.put(
+      path.baseUrl + path.athletesEndpoint + athlete.id,
+      athlete
+    );
     return {
       success: true,
     };
