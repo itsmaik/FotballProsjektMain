@@ -66,27 +66,8 @@ const AddNewAthlete = () => {
 
   return (
     <>
-<<<<<<< HEAD
       <div className="bg-white rounded-xl shadow-md border border-slate-100 p-4 space-y-2 grid justify-center px-4 py-2 text-center">
         <h3 className="font-bold">Legg til ny spiller!</h3>
-        <div>
-          <input
-            ref={nameInput}
-            className="input shadow-md border border-slate-300 text-center"
-            type="text"
-            placeholder="Name"
-          />
-=======
-      <div className="mx-auto w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="mb-5 text-center">
-          <h3 className="text-lg font-semibold text-slate-900">
-            Legg til ny spiller
-          </h3>
-          <p className="mt-1 text-sm text-slate-500">
-            Fyll inn info og last opp et bilde.
-          </p>
->>>>>>> 8deb2bc118c5006bd3db7d360948092b30a82fb1
-        </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Name */}
@@ -169,16 +150,6 @@ const AddNewAthlete = () => {
             </p>
           ) : null}
         </div>
-<<<<<<< HEAD
-        <button
-          onClick={postNewAthlete}
-          className="button shadow-md border border-slate-300 text-center bg-emerald-100 hover:bg-amber-100"
-        >
-          Lagre
-        </button>
-        <p>{statusMessage}</p>
-=======
->>>>>>> 8deb2bc118c5006bd3db7d360948092b30a82fb1
       </div>
     </>
   );
