@@ -12,12 +12,12 @@ export const Navbar = () => {
           <Searchbar />
         </div>
 
-        <div className="flex justify-center gap-8 bg-white rounded py-5 px-8 text-xl text-white mt-4 mb-1">
-          <div className="bg-green-600 p-8">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-8 bg-white rounded py-5 px-4 sm:px-8 text-xl text-white mt-4 mb-1">
+          <div className="bg-green-600 p-6 sm:p-8">
             <NavbarItem to="/" icon={<RiAdminFill />} label="Admin." />
           </div>
 
-          <div className="bg-blue-600 p-8">
+          <div className="bg-blue-600 p-6 sm:p-8">
             <NavbarItem
               to="/register"
               icon={<BsPersonFillAdd />}
@@ -25,7 +25,7 @@ export const Navbar = () => {
             />
           </div>
 
-          <div className="bg-yellow-600 p-8">
+          <div className="bg-yellow-600 p-6 sm:p-8">
             <NavbarItem
               to="/finances"
               icon={<RiMoneyDollarCircleFill />}
@@ -33,7 +33,7 @@ export const Navbar = () => {
             />
           </div>
 
-          <div className="bg-gray-600 p-8">
+          <div className="bg-gray-600 p-6 sm:p-8">
             <NavbarItem to="/venues" icon={<MdStadium />} label="Venues" />
           </div>
         </div>

@@ -9,8 +9,8 @@ type NavbarItemProps = {
 export function NavbarItem({ to, icon, label }: NavbarItemProps) {
   return (
     <Link to={to} className="flex flex-col items-center gap-1 ">
-      <span className="text-2xl">{icon}</span>
-      <span>{label}</span>
+      <span className="text-2xl sm:text-3xl">{icon}</span>
+      <span className="text-base sm:text-lg">{label}</span>
     </Link>
   );
 }
