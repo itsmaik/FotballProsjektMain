@@ -4,5 +4,4 @@ export const path = {
   venuesEndpoint: "venues",
   purchaseEndpoint: "purchase",
   financesEndpoint: "finances",
-  imageUploadEndpoint: "http://localhost:5212/ImageUpload",
 };

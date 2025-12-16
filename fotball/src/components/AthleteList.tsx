@@ -2,9 +2,10 @@ import { useAthletes } from "../context/AthletesContext";
 import AthleteItem from "./AthleteItem";
 
 const AthleteList = () => {
-  const { athletes, searchQuery } = useAthletes();
+  const { athletes, searchQuery, isLoading, error } = useAthletes();
 
-  console.log(athletes);
+  if (isLoading) return <p className="p-8">Loading athletes...</p>;
+  if (error) return <p className="p-8 text-red-600">{error}</p>;
 
   const filteredAthletes = athletes.filter((a) =>
     a.name.toLowerCase().includes(searchQuery.trim().toLowerCase())

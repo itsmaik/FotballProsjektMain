@@ -14,7 +14,7 @@ export default function Dashboard() {
 
   const {
     athletes,
-    purchase,
+    purchaseAthlete,
     isLoading: athletesLoading,
     error: athletesError,
     refreshAthletes,
@@ -40,9 +40,7 @@ export default function Dashboard() {
     }
 
     try {
-      await purchase(athlete.id!);
-
-      // Keep finance in sync after purchase
+      await purchaseAthlete(athlete.id!);
       await refreshFinance();
     } catch (err) {
       console.error(err);

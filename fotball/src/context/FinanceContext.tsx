@@ -1,12 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import type { IFinance } from "../interfaces/IFinance";
 import type { IFinanceContext } from "../interfaces/IFinanceContext";
-import {
-  getFinance,
-  takeLoan,
-  updateFinance,
-} from "../services/FinanceService";
-
+import { financeService } from "../services/FinanceService";
+import { getErrorMessage } from "../services/error";
 interface IFinanceProvider {
   children: React.ReactNode;
 }
@@ -24,11 +20,11 @@ export const FinanceProvider = ({ children }: IFinanceProvider) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await getFinance();
+      const data = await financeService.get();
       setFinance(data);
     } catch (err) {
       console.error(err);
-      setError("Could not load finance data");
+      setError(getErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -41,21 +37,21 @@ export const FinanceProvider = ({ children }: IFinanceProvider) => {
   async function takeLoanAmount(amount: number) {
     if (amount <= 0) return;
     try {
-      const updated = await takeLoan(amount);
+      const updated = await financeService.takeLoan(amount);
       setFinance(updated);
     } catch (err) {
       console.error(err);
-      setError("Could not take loan");
+      setError(getErrorMessage(err));
     }
   }
 
   async function updateFinanceState(financeToUpdate: IFinance) {
     try {
-      await updateFinance(financeToUpdate);
+      await financeService.update(financeToUpdate);
       setFinance(financeToUpdate);
     } catch (err) {
       console.error(err);
-      setError("Could not update finance");
+      setError(getErrorMessage(err));
     }
   }
 

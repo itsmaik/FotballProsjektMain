@@ -19,7 +19,7 @@ public class FinancesController(FotballContext _context) : ControllerBase
         {
             finance = new Finance
             {
-                MoneyLeft = 0,
+                MoneyLeft = 10_000_000,
                 MoneySpent = 0,
                 NumberOfPurchases = 0
             };
@@ -54,6 +54,28 @@ public class FinancesController(FotballContext _context) : ControllerBase
         catch (DbUpdateException)
         {
             return Problem("Could not update finance.", statusCode: 500);
+        }
+    }
+
+    // POST => api/finances/loan?amount=123
+    [HttpPost("loan")]
+    public async Task<ActionResult<Finance>> TakeLoan([FromQuery] int amount)
+    {
+        if (amount <= 0) return BadRequest("Amount must be greater than 0.");
+
+        Finance? finance = await _context.Finances.FirstOrDefaultAsync();
+        if (finance == null) return BadRequest("Finance not initialized.");
+
+        finance.MoneyLeft += amount;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(finance);
+        }
+        catch (DbUpdateException)
+        {
+            return Problem("Could not take loan.", statusCode: 500);
         }
     }
 }

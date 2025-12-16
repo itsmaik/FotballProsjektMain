@@ -1,13 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import type { IAthlete } from "../interfaces/IAthlete";
 import type { IAthletesContext } from "../interfaces/IAthletesContext";
-import {
-  getAthletes,
-  createAthlete,
-  updateAthlete,
-  deleteAthlete,
-  purchaseAthlete,
-} from "../services/AthleteService";
+import { athleteService } from "../services/AthleteService";
+import { getErrorMessage } from "../services/error";
 
 interface IAthletesProvider {
   children: React.ReactNode;
@@ -24,14 +19,14 @@ export const AthletesProvider = ({ children }: IAthletesProvider) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const refreshAthletes = async () => {
+    setError(null);
     try {
       setIsLoading(true);
-      setError(null);
-      const response = await getAthletes();
-      setAthletes(response.data ?? []);
+      const data = await athleteService.getAll();
+      setAthletes(data);
     } catch (err) {
       console.error(err);
-      setError("Could not load athletes");
+      setError(getErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -42,42 +37,54 @@ export const AthletesProvider = ({ children }: IAthletesProvider) => {
   }, []);
 
   const addAthlete = async (athlete: IAthlete) => {
+    setError(null);
     try {
-      await createAthlete(athlete);
+      await athleteService.create(athlete);
       await refreshAthletes();
+      return true;
     } catch (err) {
       console.error(err);
-      setError("Could not create athlete");
+      setError(getErrorMessage(err));
+      return false;
     }
   };
 
   const editAthlete = async (athlete: IAthlete) => {
+    setError(null);
     try {
-      await updateAthlete(athlete);
+      await athleteService.update(athlete);
       await refreshAthletes();
+      return true;
     } catch (err) {
       console.error(err);
-      setError("Could not update athlete");
+      setError(getErrorMessage(err));
+      return false;
     }
   };
 
   const removeAthlete = async (id: number) => {
+    setError(null);
     try {
-      await deleteAthlete(id);
+      await athleteService.remove(id);
       setAthletes((prev) => prev.filter((a) => a.id !== id));
+      return true;
     } catch (err) {
       console.error(err);
-      setError("Could not delete athlete");
+      setError(getErrorMessage(err));
+      return false;
     }
   };
 
-  const purchase = async (id: number) => {
+  const purchaseAthlete = async (id: number) => {
+    setError(null);
     try {
-      await purchaseAthlete(id);
+      await athleteService.purchase(id);
       await refreshAthletes();
+      return true;
     } catch (err) {
       console.error(err);
-      setError("Could not purchase athlete");
+      setError(getErrorMessage(err));
+      return false;
     }
   };
 
@@ -91,7 +98,7 @@ export const AthletesProvider = ({ children }: IAthletesProvider) => {
     addAthlete,
     editAthlete,
     removeAthlete,
-    purchase,
+    purchaseAthlete,
   };
 
   return (
@@ -103,8 +110,6 @@ export const AthletesProvider = ({ children }: IAthletesProvider) => {
 
 export const useAthletes = () => {
   const ctx = useContext(AthletesContext);
-  if (!ctx) {
-    throw new Error("useAthletes must be used inside AthletesProvider");
-  }
+  if (!ctx) throw new Error("useAthletes must be used inside AthletesProvider");
   return ctx;
 };

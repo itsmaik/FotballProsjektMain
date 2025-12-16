@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useAthletes } from "../context/AthletesContext";
+import { useFinance } from "../context/FinanceContext";
 import type { IAthlete } from "../interfaces/IAthlete";
 import AthleteForm, { type AthleteFormValues } from "./globals/AthleteForm";
 
 export default function AthleteItem({ player }: { player: IAthlete }) {
-  const { removeAthlete, editAthlete, purchase } = useAthletes();
+  const { removeAthlete, editAthlete, purchaseAthlete } = useAthletes();
+  const { refreshFinance } = useFinance();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
@@ -14,10 +16,16 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
     await removeAthlete(player.id);
   };
 
-  // const handlePurchase = async () => {
-  //   if (!player.id) return;
-  //   await purchase(player.id);
-  // };
+  const handlePurchase = async () => {
+    const ok = await purchaseAthlete(player.id!);
+    if (ok) {
+      await refreshFinance();
+      setStatusMessage("Kjøpt!");
+    } else {
+      setStatusMessage("Could not purchase.");
+    }
+    setTimeout(() => setStatusMessage(null), 2500);
+  };
 
   const handleEditSubmit = async (values: AthleteFormValues) => {
     try {
@@ -26,8 +34,6 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
         name: values.name.trim(),
         gender: values.gender.trim(),
         price: Number(values.price),
-        // image unchanged
-        // purchaseStatus unchanged
       });
       setStatusMessage("Saved!");
       setIsModalOpen(false);
@@ -54,14 +60,19 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
 
         <div>
           {player.purchaseStatus ? (
-            <p className="text-sm text-slate-600">Utilgjengelig for kjøp</p>
+            <p className="text-sm text-red-600">Utilgjengelig for kjøp</p>
           ) : (
             <button
-              // onClick={handlePurchase}
+              onClick={handlePurchase}
               className="w-full px-3 py-1 rounded bg-green-600 text-white text-sm"
             >
               Kjøp Spiller
             </button>
+          )}
+          {statusMessage && (
+            <p className="text-sm text-center text-slate-600">
+              {statusMessage}
+            </p>
           )}
         </div>
 
@@ -70,14 +81,14 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
             className="px-3 py-1 rounded bg-blue-600 text-white text-sm"
             onClick={() => setIsModalOpen(true)}
           >
-            Edit
+            Rediger
           </button>
 
           <button
             className="px-3 py-1 rounded bg-red-600 text-white text-sm"
             onClick={handleDelete}
           >
-            Delete
+            Slett
           </button>
         </div>
 

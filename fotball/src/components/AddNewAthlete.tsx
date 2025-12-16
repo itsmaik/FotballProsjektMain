@@ -39,13 +39,17 @@ export default function AddNewAthlete() {
         purchaseStatus: false,
       };
 
-      await addAthlete(newAthlete);
+      const ok = await addAthlete(newAthlete);
 
-      setStatusMessage(`${newAthlete.name} er lagret!`);
-      setName("");
-      setGender("");
-      setPrice(0);
-      setImage(null);
+      if (ok) {
+        setStatusMessage(`${newAthlete.name} er lagret!`);
+        setName("");
+        setGender("");
+        setPrice(0);
+        setImage(null);
+      } else {
+        setStatusMessage("Kunne ikke lagre spilleren.");
+      }
     } catch (err) {
       console.error(err);
       setStatusMessage("Kunne ikke lagre spilleren.");

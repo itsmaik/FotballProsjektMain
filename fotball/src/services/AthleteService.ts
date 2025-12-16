@@ -1,148 +1,27 @@
-import axios from "axios";
+import { http } from "./http";
 import type { IAthlete } from "../interfaces/IAthlete";
-import type { IVenue } from "../interfaces/IVenue";
-import { path } from "./PathService";
 
-// const baseUrl = "http://localhost:5212/api/";
+export const athleteService = {
+  getAll: async (): Promise<IAthlete[]> => {
+    const res = await http.get<IAthlete[]>("athletes");
+    return res.data;
+  },
 
-// const athletesEndpoint = "athletes/";
-// const venuesEndpoint = "venues";
-// const purchaseEndpoint = "purchase";
+  create: async (athlete: IAthlete): Promise<IAthlete> => {
+    const res = await http.post<IAthlete>("athletes", athlete);
+    return res.data;
+  },
 
-interface IAthleteResponsList {
-  success: boolean;
-  data: IAthlete[] | null;
-}
+  update: async (athlete: IAthlete): Promise<void> => {
+    if (!athlete.id) throw new Error("Missing athlete id");
+    await http.put(`athletes/${athlete.id}`, athlete);
+  },
 
-//Get all Athletes
-export const getAthletes = async (): Promise<IAthleteResponsList> => {
-  try {
-    const res = await axios.get(path.baseUrl + path.athletesEndpoint);
-    return {
-      success: true,
-      data: res.data,
-    };
-  } catch {
-    return {
-      success: false,
-      data: null,
-    };
-  }
-};
+  remove: async (id: number): Promise<void> => {
+    await http.delete(`athletes/${id}`);
+  },
 
-//Get all Athletes
-export const getAthletesById = async (
-  id: string
-): Promise<IAthleteResponsList> => {
-  try {
-    const res = await axios.get(path.baseUrl + path.athletesEndpoint + id);
-    return {
-      success: true,
-      data: res.data,
-    };
-  } catch {
-    return {
-      success: false,
-      data: null,
-    };
-  }
-};
-
-interface IDefaultAthleteResponse {
-  success: boolean;
-}
-
-//Create new Athlete
-export const createAthlete = async (
-  newPlayer: IAthlete
-): Promise<IDefaultAthleteResponse> => {
-  try {
-    const res = await axios.post(
-      path.baseUrl + path.athletesEndpoint,
-      newPlayer
-    );
-    return {
-      success: true,
-      data: res.data,
-    };
-  } catch {
-    return { success: false };
-  }
-};
-
-//Update Athletes Information
-export const updateAthlete = async (
-  athlete: IAthlete
-): Promise<IDefaultAthleteResponse> => {
-  try {
-    const res = await axios.put(
-      path.baseUrl + path.athletesEndpoint + athlete.id,
-      athlete
-    );
-    return {
-      success: true,
-    };
-  } catch {
-    return { success: false };
-  }
-};
-
-//Delete an Athlete
-export const deleteAthlete = async (id: number): Promise<void> => {
-  const res = await axios.delete(path.baseUrl + path.athletesEndpoint + id);
-};
-
-export const purchaseAthlete = async (athleteId: number) => {
-  const res = await axios.post(
-    path.baseUrl + path.purchaseEndpoint + athleteId
-  );
-  return res.data;
-};
-
-interface IVenueResponsList {
-  success: boolean;
-  data: IVenue[] | null;
-}
-const getVenues = async (): Promise<IVenueResponsList> => {
-  try {
-    const res = await axios.get(path.baseUrl + path.venuesEndpoint);
-    return {
-      success: true,
-      data: res.data,
-    };
-  } catch {
-    return {
-      success: false,
-      data: null,
-    };
-  }
-};
-
-//FIRMA
-interface IFinanceResponsList {
-  success: boolean;
-  data: IFinance[] | null;
-}
-const getFinance = async (): Promise<IFinanceResponsList> => {
-  try {
-    const res = await axios.get(path.baseUrl + path.financesEndpoint);
-    return {
-      success: true,
-      data: res.data,
-    };
-  } catch {
-    return {
-      success: false,
-      data: null,
-    };
-  }
-};
-
-export default {
-  getAthletes,
-  createAthlete,
-  updateAthlete,
-  deleteAthlete,
-  getVenues,
-  getFinance,
+  purchase: async (id: number): Promise<void> => {
+    await http.post(`purchase/${id}`);
+  },
 };
