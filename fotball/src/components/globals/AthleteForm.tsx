@@ -54,7 +54,7 @@ export default function AthleteForm({
           {/* Name */}
           <div className="sm:col-span-2">
             <label className="mb-1 block text-sm font-medium text-slate-700">
-              Navn
+              Name
             </label>
             <input
               type="text"

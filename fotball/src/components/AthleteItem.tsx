@@ -28,7 +28,7 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
     setIsDeleting(false);
     setIsDeleteOpen(false);
 
-    ok ? success("Spiller slettet ✅") : error("Kunne ikke slette spilleren.");
+    ok ? success("Player deleted ✅") : error("Could not delete player");
   };
 
   const handlePurchase = async () => {
@@ -52,7 +52,7 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
     const ok = await editAthlete({
       ...player,
       name: values.name.trim(),
-      gender: values.gender.trim(),
+      // gender: values.gender.trim(),
       price: Number(values.price),
     });
 
@@ -81,14 +81,14 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
 
         <div>
           {player.purchaseStatus ? (
-            <p className="text-sm text-red-600">Utilgjengelig for kjøp</p>
+            <p className="text-sm text-red-600">Sold</p>
           ) : (
             <button
               onClick={handlePurchase}
               disabled={isBuying}
               className="w-full px-3 py-1 rounded bg-green-600 text-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isBuying ? "Kjøper..." : "Kjøp Spiller"}
+              {isBuying ? "Buying..." : "Purchase player"}
             </button>
           )}
         </div>
@@ -104,7 +104,7 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
             className="px-3 py-1 rounded bg-blue-600 text-white text-sm"
             onClick={() => setIsEditOpen(true)}
           >
-            Rediger
+            Edit
           </button>
 
           <button
@@ -112,7 +112,7 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
             disabled={isDeleting}
             onClick={() => setIsDeleteOpen(true)}
           >
-            {isDeleting ? "Sletter..." : "Slett"}
+            {isDeleting ? "Deleting..." : "Delete"}
           </button>
         </div>
       </article>
@@ -133,7 +133,7 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
           }}
           onSubmit={handleEditSubmit}
           onCancel={() => setIsEditOpen(false)}
-          statusMessage={isSavingEdit ? "Lagrer endringer..." : null}
+          statusMessage={isSavingEdit ? "Saving changes..." : null}
           isSubmitting={isSavingEdit}
           feedbackVariant="success"
         />
@@ -146,8 +146,10 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
         maxWidthClassName="max-w-md"
       >
         <div className="rounded-xl bg-white p-4 shadow">
-          <h3 className="text-lg font-semibold mb-2">Slette spiller?</h3>
-          <p className="text-sm text-slate-600 mb-4">Dette kan ikke angres.</p>
+          <h3 className="text-lg font-semibold mb-2">Delete player?</h3>
+          <p className="text-sm text-slate-600 mb-4">
+            Action can not be undone.
+          </p>
 
           <div className="flex justify-end gap-2">
             <button
@@ -156,7 +158,7 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
               onClick={() => setIsDeleteOpen(false)}
               disabled={isDeleting}
             >
-              Avbryt
+              Cancel
             </button>
             <button
               type="button"
@@ -164,7 +166,7 @@ export default function AthleteItem({ player }: { player: IAthlete }) {
               onClick={handleDelete}
               disabled={isDeleting}
             >
-              Slett
+              Delete
             </button>
           </div>
         </div>
