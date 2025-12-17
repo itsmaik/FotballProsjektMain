@@ -7,7 +7,7 @@ import { NavbarItem } from "./NavbarItem";
 export const Navbar = () => {
   return (
     <nav className={`relative w-full min-h-[40vh]`}>
-      <div className="w-full bg-gray-100 shadow-md fixed top-0">
+      <div className="w-full bg-gray-100 shadow-md fixed top-0 z-90">
         <div className="flex justify-center my-4 px-8">
           <Searchbar />
         </div>

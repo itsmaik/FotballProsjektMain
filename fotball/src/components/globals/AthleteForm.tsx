@@ -1,3 +1,4 @@
+import Feedback from "./Feedback";
 import { useEffect, useState, type FormEvent } from "react";
 
 export type AthleteFormValues = {
@@ -13,6 +14,8 @@ type AthleteFormProps = {
   onSubmit: (values: AthleteFormValues) => Promise<void> | void;
   onCancel?: () => void;
   statusMessage?: string | null;
+  isSubmitting?: boolean;
+  feedbackVariant?: "success" | "error";
 };
 
 const defaultValues: AthleteFormValues = {
@@ -28,6 +31,8 @@ export default function AthleteForm({
   onSubmit,
   onCancel,
   statusMessage,
+  isSubmitting = false,
+  feedbackVariant = "success",
 }: AthleteFormProps) {
   const [values, setValues] = useState<AthleteFormValues>(initialValues);
 
@@ -66,7 +71,7 @@ export default function AthleteForm({
           {/* Price */}
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700">
-              Kjøpspris
+              Price
             </label>
             <input
               type="number"
@@ -83,7 +88,7 @@ export default function AthleteForm({
           {/* Gender */}
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700">
-              Kjønn
+              Gender
             </label>
             <select
               className="input"
@@ -94,11 +99,11 @@ export default function AthleteForm({
               required
             >
               <option value="" disabled>
-                Velg kjønn
+                Choose Gender
               </option>
-              <option value="Man">Mann</option>
-              <option value="Woman">Kvinne</option>
-              <option value="Other">Annet</option>
+              <option value="Man">Man</option>
+              <option value="Woman">Woman</option>
+              <option value="Other">Other</option>
             </select>
           </div>
         </div>
@@ -106,10 +111,11 @@ export default function AthleteForm({
         <div className="flex flex-col gap-3 pt-2">
           <button
             type="submit"
+            disabled={isSubmitting}
             className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm
-              hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200"
+              hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {submitLabel}
+            {isSubmitting ? "Lagrer..." : submitLabel}
           </button>
 
           {onCancel && (
@@ -122,11 +128,7 @@ export default function AthleteForm({
             </button>
           )}
 
-          {statusMessage ? (
-            <p className="text-center text-sm text-slate-600">
-              {statusMessage}
-            </p>
-          ) : null}
+          <Feedback message={statusMessage ?? null} variant={feedbackVariant} />
         </div>
       </form>
     </div>

@@ -31,7 +31,7 @@ export default function AddNewAthlete() {
       !image
     ) {
       setMsg({
-        text: "Du må fylle ut alle felter + velge bilde!",
+        text: "All form inputs must be filled out + choose an image",
         variant: "error",
       });
       return;
@@ -42,7 +42,6 @@ export default function AddNewAthlete() {
 
       const newAthlete: IAthlete = {
         name: name.trim(),
-        gender: gender.trim(),
         price: Number(price),
         image: image.name,
         purchaseStatus: false,
@@ -51,17 +50,17 @@ export default function AddNewAthlete() {
       const ok = await addAthlete(newAthlete);
 
       if (ok) {
-        setMsg({ text: `${newAthlete.name} er lagret!`, variant: "success" });
+        setMsg({ text: `${newAthlete.name} is created!`, variant: "success" });
         setName("");
         setGender("");
         setPrice("");
         setImage(null);
       } else {
-        setMsg({ text: "Kunne ikke lagre spilleren.", variant: "error" });
+        setMsg({ text: "Could not save player.", variant: "error" });
       }
     } catch (err) {
       console.error(err);
-      setMsg({ text: "Kunne ikke lagre spilleren.", variant: "error" });
+      setMsg({ text: "Could not save player.", variant: "error" });
     } finally {
       setTimeout(() => setMsg(null), 4000);
     }
@@ -69,18 +68,18 @@ export default function AddNewAthlete() {
 
   return (
     <div className="bg-white rounded-xl shadow-md border border-slate-100 p-6 max-w-3xl mx-auto">
-      <h3 className="font-bold text-center mb-4">Legg til ny spiller!</h3>
+      <h3 className="font-bold text-center mb-4">Register new player</h3>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Name */}
           <div className="sm:col-span-2">
             <label className="mb-1 block text-sm font-medium text-slate-700">
-              Navn
+              Name
             </label>
             <input
               className="input"
-              placeholder="F.eks. Erling Haaland"
+              placeholder="Ex. Erling Haaland"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -94,7 +93,7 @@ export default function AddNewAthlete() {
             <input
               type="number"
               className="input"
-              placeholder="F.eks. 2000"
+              placeholder="Ex. 2000"
               value={price}
               min={0}
               onChange={(e) =>
@@ -106,7 +105,7 @@ export default function AddNewAthlete() {
           {/* Gender */}
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700">
-              Kjønn
+              Gender
             </label>
             <select
               className="input"
@@ -114,11 +113,11 @@ export default function AddNewAthlete() {
               onChange={(e) => setGender(e.target.value)}
             >
               <option value="" disabled>
-                Velg kjønn
+                Choose Gender
               </option>
-              <option value="Man">Mann</option>
-              <option value="Woman">Kvinne</option>
-              <option value="Other">Annet</option>
+              <option value="Man">Man</option>
+              <option value="Woman">Woman</option>
+              <option value="Other">Other</option>
             </select>
           </div>
           {/* Image */}
@@ -148,7 +147,7 @@ export default function AddNewAthlete() {
           type="submit"
           className="w-full inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200"
         >
-          Lagre
+          Save
         </button>
 
         <Feedback
