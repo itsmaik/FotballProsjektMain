@@ -4,7 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 export type AthleteFormValues = {
   name: string;
   gender: string;
-  price: number;
+  price: number | "";
 };
 
 type AthleteFormProps = {
@@ -21,7 +21,7 @@ type AthleteFormProps = {
 const defaultValues: AthleteFormValues = {
   name: "",
   gender: "",
-  price: 0,
+  price: "",
 };
 
 export default function AthleteForm({
