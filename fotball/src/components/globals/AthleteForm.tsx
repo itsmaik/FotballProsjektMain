@@ -31,7 +31,6 @@ export default function AthleteForm({
 }: AthleteFormProps) {
   const [values, setValues] = useState<AthleteFormValues>(initialValues);
 
-  // When opening the form for a different athlete, sync inputs
   useEffect(() => {
     setValues(initialValues);
   }, [initialValues]);
