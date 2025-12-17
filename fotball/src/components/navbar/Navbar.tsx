@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import { Searchbar } from "./Searchbar";
 import { RiMoneyDollarCircleFill, RiAdminFill } from "react-icons/ri";
 import { MdStadium } from "react-icons/md";
 import { BsPersonFillAdd } from "react-icons/bs";
+import { NavbarItem } from "./NavbarItem";
 
 export const Navbar = () => {
   return (
@@ -12,33 +12,29 @@ export const Navbar = () => {
           <Searchbar />
         </div>
 
-        <div className="flex justify-center gap-8 bg-white rounded py-5 px-8 text-xl text-white mt-4 mb-1">
-          <div className="bg-green-600 p-8">
-            <Link to="/" className="flex flex-col items-center gap-1">
-              <RiAdminFill className="text-2xl" />
-              <span>Admin.</span>
-            </Link>
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-8 bg-white rounded py-5 px-4 sm:px-8 text-xl text-white mt-4 mb-1">
+          <div className="bg-green-600 p-6 sm:p-8">
+            <NavbarItem to="/" icon={<RiAdminFill />} label="Admin." />
           </div>
 
-          <div className="bg-blue-600 p-8">
-            <Link to="/register" className="flex flex-col items-center gap-1">
-              <BsPersonFillAdd className="text-2xl" />
-              <span>Register</span>
-            </Link>
+          <div className="bg-blue-600 p-6 sm:p-8">
+            <NavbarItem
+              to="/register"
+              icon={<BsPersonFillAdd />}
+              label="Register"
+            />
           </div>
 
-          <div className="bg-yellow-600 p-8">
-            <Link to="/finances" className="flex flex-col items-center gap-1">
-              <RiMoneyDollarCircleFill className="text-2xl" />
-              <span>Finances</span>
-            </Link>
+          <div className="bg-yellow-600 p-6 sm:p-8">
+            <NavbarItem
+              to="/finances"
+              icon={<RiMoneyDollarCircleFill />}
+              label="Finances"
+            />
           </div>
 
-          <div className="bg-gray-600 p-8">
-            <Link to="/venues" className="flex flex-col items-center gap-1">
-              <MdStadium className="text-2xl" />
-              <span>Venues</span>
-            </Link>
+          <div className="bg-gray-600 p-6 sm:p-8">
+            <NavbarItem to="/venues" icon={<MdStadium />} label="Venues" />
           </div>
         </div>
       </div>

@@ -30,7 +30,6 @@ DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
 defaultFilesOptions.DefaultFileNames.Add("index.html");
 app.UseDefaultFiles(defaultFilesOptions);
 
-
 app.UseStaticFiles();
 
 app.UseCors("AllowAll");

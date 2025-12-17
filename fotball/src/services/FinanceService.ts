@@ -1,26 +1,21 @@
-import axios from "axios";
 import type { IFinance } from "../interfaces/IFinance";
+import { http } from "./http";
 
-const baseUrl = "http://localhost:5212/api/";
-export const financesEndpoint = "finances";
+export const financeService = {
+  get: async (): Promise<IFinance> => {
+    const res = await http.get<IFinance>("finances");
+    return res.data;
+  },
 
-export const getFinance = async (): Promise<IFinance> => {
-  const res = await axios.get<IFinance>(baseUrl + financesEndpoint);
-  return res.data;
-};
+  update: async (finance: IFinance): Promise<void> => {
+    if (!finance.id) throw new Error("Finance id is missing");
+    await http.put(`finances/${finance.id}`, finance);
+  },
 
-export const updateFinance = async (finance: IFinance): Promise<void> => {
-  if (!finance.id) throw new Error("Finance id is missing");
-  await axios.put(baseUrl + financesEndpoint, finance);
-};
-
-export const takeLoan = async (amount: number): Promise<IFinance> => {
-  const res = await axios.post<IFinance>(
-    `${baseUrl + financesEndpoint}/loan`,
-    null,
-    {
+  takeLoan: async (amount: number): Promise<IFinance> => {
+    const res = await http.post<IFinance>("finances/loan", null, {
       params: { amount },
-    }
-  );
-  return res.data;
+    });
+    return res.data;
+  },
 };
