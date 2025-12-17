@@ -26,6 +26,10 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
+defaultFilesOptions.DefaultFileNames.Add("index.html");
+app.UseDefaultFiles(defaultFilesOptions);
+
 app.UseStaticFiles();
 
 app.UseCors("AllowAll");

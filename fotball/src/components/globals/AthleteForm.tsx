@@ -85,16 +85,21 @@ export default function AthleteForm({
             <label className="mb-1 block text-sm font-medium text-slate-700">
               Kjønn
             </label>
-            <input
-              type="text"
+            <select
               className="input"
               value={values.gender}
               onChange={(e) =>
                 setValues((p) => ({ ...p, gender: e.target.value }))
               }
-              placeholder="M / K"
               required
-            />
+            >
+              <option value="" disabled>
+                Velg kjønn
+              </option>
+              <option value="Man">Mann</option>
+              <option value="Woman">Kvinne</option>
+              <option value="Other">Annet</option>
+            </select>
           </div>
         </div>
 

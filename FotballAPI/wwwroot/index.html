@@ -3,9 +3,213 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
     <title>Document</title>
   </head>
   <body>
-    <main></main>
+    <main>
+      <!--Doc link : http://localhost:5212/index.html -->
+
+      <section class="style">
+        <div class="container">
+          <label class="title">Documentation FotballAPI</label>
+          <div class="c">
+            <p>All responses will return data in JSON</p>
+          </div>
+          <label>REST</label>
+          <div>
+            <div class="c2">
+              <label>BaseUrl</label>
+              <a href="http://localhost:5212/api/"
+                >http://localhost:5212/api/</a
+              >
+
+              <label>GET</label>
+              <p>
+                All Athletes :
+                <a href="http://localhost:5212/api/athletes/"
+                  >http://localhost:5212/api/athletes/</a
+                >
+              </p>
+              <p>
+                Athlete by Id :
+                <a href="http://localhost:5212/api/athletes/2"
+                  >http://localhost:5212/api/athletes/{id}
+                </a>
+              </p>
+              <p>
+                All Venues :
+                <a href="http://localhost:5212/api/venues"
+                  >http://localhost:5212/api/venues</a
+                >
+              </p>
+              <p>
+                All Finances :
+                <a href="http://localhost:5212/api/finances"
+                  >http://localhost:5212/api/finances
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <!--GET container starter-->
+          <label>GET</label>
+          <div>
+            <!-- GET All Athletes-->
+            <div class="c1">
+              <label>Get all Athletes</label>
+              <a href="http://localhost:5212/api/athletes/"
+                >http://localhost:5212/api/athletes/</a
+              >
+            </div>
+
+            <div class="c1 code">
+              <pre>
+                [
+                  {
+                    "id": 1,
+                    "name": "Antonio Nusa",
+                    "gender": "Male",
+                    "price": 2,
+                    "image": "Antonio Nusa.jpg",
+                    "purchaseStatus": false
+                  },
+                  {
+                    "id": 3,
+                    "name": "Erling Haaland",
+                    "gender": "Male",
+                    "price": 2,
+                    "image": "haaland.png",
+                    "purchaseStatus": false
+                  },
+                  {
+                    "id": 4,
+                    "name": "Kane something",
+                    "gender": "Male",
+                    "price": 4,
+                    "image": "kane.png",
+                    "purchaseStatus": false
+                  },
+                  {
+                    "id": 5,
+                    "name": "Cristiano Ronaldo",
+                    "gender": "Male",
+                    "price": 4,
+                    "image": "ronaldo.png",
+                    "purchaseStatus": false
+                  },
+                  {
+                    "id": 9,
+                    "name": "Messi",
+                    "gender": "Male",
+                    "price": 2,
+                    "image": "messi.jpg",
+                    "purchaseStatus": false
+                  },
+                  {
+                    "id": 12,
+                    "name": "SomeTest",
+                    "gender": "Mann",
+                    "price": 2,
+                    "image": "Antonio Nusa.jpg",
+                    "purchaseStatus": false
+                  },
+                  {
+                    "id": 13,
+                    "name": " Ronaldinho",
+                    "gender": "Male",
+                    "price": 40,
+                    "image": "ronaldinho.png",
+                    "purchaseStatus": false
+                  }
+                ]
+              </pre>
+            </div>
+          </div>
+        </div>
+        <!-- GET Athlete by ID-->
+        <div class="container">
+          <div class="c1">
+            <label>Get a single athlete by id</label>
+            <a href="http://localhost:5212/api/athletes/1"
+              >http://localhost:5212/api/athletes/{id}</a
+            >
+          </div>
+          <div class="c1 code">
+            <pre>
+              {
+                "id": 1,
+                "name": "Antonio Nusa",
+                "gender": "Male",
+                "price": 2,
+                "image": "Antonio Nusa.jpg",
+                "purchaseStatus": false
+              }
+            </pre>
+          </div>
+        </div>
+        <!-- GET VENUS-->
+        <div class="container">
+          <div class="c1">
+            <label>Get all Venues</label>
+            <a href="http://localhost:5212/api/venues"
+              >http://localhost:5212/api/venues</a
+            >
+          </div>
+          <div class="c1 code">
+            <pre>
+              [
+                {
+                  "id": 1,
+                  "venueName": "Ullevaal ",
+                  "capacity": 15000,
+                  "venueImage": "ullevaal.png"
+                },
+                {
+                  "id": 2,
+                  "venueName": "Brann ",
+                  "capacity": 17686,
+                  "venueImage": "brann.png"
+                },
+                {
+                  "id": 3,
+                  "venueName": "Lerkendal ",
+                  "capacity": 21421,
+                  "venueImage": "lerkendal.png"
+                },
+                {
+                  "id": 4,
+                  "venueName": "Utility",
+                  "capacity": 7000,
+                  "venueImage": "unity.png"
+                }
+              ]
+            </pre>
+          </div>
+        </div>
+        <!-- GET all Finances-->
+        <div class="container">
+          <div class="c1">
+            <label>Get all Finances</label>
+            <a href="http://localhost:5212/api/finances"
+              >http://localhost:5212/api/finances</a
+            >
+          </div>
+          <div class="c1 code">
+            <pre class="max">
+              {
+                "id": 1,
+                "moneyLeft": 0,
+                "numberOfPurchases": 0,
+                "moneySpent": 0
+              }
+            </pre>
+          </div>
+        </div>
+        <!-- GET, container end-->
+      </section>
+    </main>
   </body>
 </html>

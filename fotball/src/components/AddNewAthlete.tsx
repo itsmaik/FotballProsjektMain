@@ -8,10 +8,7 @@ export default function AddNewAthlete() {
   const { addAthlete } = useAthletes();
 
   type Msg = { text: string; variant: "success" | "error" };
-  const [msg, setMsg] = useState<Msg | null>({
-    text: "Legg til spillere!",
-    variant: "success",
-  });
+  const [msg, setMsg] = useState<Msg | null>(null);
 
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
@@ -111,14 +108,19 @@ export default function AddNewAthlete() {
             <label className="mb-1 block text-sm font-medium text-slate-700">
               Kjønn
             </label>
-            <input
+            <select
               className="input"
-              placeholder="M / K"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-            />
+            >
+              <option value="" disabled>
+                Velg kjønn
+              </option>
+              <option value="Man">Mann</option>
+              <option value="Woman">Kvinne</option>
+              <option value="Other">Annet</option>
+            </select>
           </div>
-
           {/* Image */}
           <div className="sm:col-span-2">
             <label className="mb-1 block text-sm font-medium text-slate-700">
